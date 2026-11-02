@@ -1,0 +1,2 @@
+每个作品的视频不要集中放在一个 videos 总文件夹。请分别放进对应作品目录，并统一命名为 video.mp4。
+例如：works/01_echoes_in_mist/video.mp4

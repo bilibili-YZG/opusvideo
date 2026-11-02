@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Claude Opus 5.5 · Motion Archive</title><link rel="stylesheet" href="assets/css/style.css"></head>
+<body><div class="wrap">
+<header><a class="brand" href="index.html"><span class="brand-mark">C</span><span><span class="brand-title">CLAUDE / OPUS 5.5</span><span class="brand-sub" style="display:block">GENERATIVE MOTION ARCHIVE</span></span></a><div class="header-right"><b>●</b> CURATED VIDEO COLLECTION　 /　 VOL. 01</div></header>
+<section class="hero"><div><div class="eyebrow">A CURATED VIDEO COLLECTION</div><h1>Ideas in Motion.</h1><p>由 Claude Opus 5.5 参与构思与制作的视频实验档案。浏览作品集，进入独立作品页面观看视频，并获取成片、工程文件与创作提示词。</p></div><div class="hero-quote">“Make something worth watching.”</div></section>
+<div class="toolbar"><input id="search" class="search" type="search" placeholder="搜索作品名称 / 关键词…"><div class="filters"><button class="filter active" data-filter="all">全部作品</button><button class="filter" data-filter="音乐影像">音乐影像</button><button class="filter" data-filter="视觉实验">视觉实验</button></div></div>
+<div class="collection-label"><strong>作品目录 / SELECTED WORKS</strong><span id="count">04 PROJECTS</span></div>
+<main class="grid" id="grid"></main>
+<footer><span>CLAUDE OPUS 5.5 · VIDEO SHOWCASE</span><span>AN INDEPENDENT CREATIVE ARCHIVE</span></footer>
+</div>
+<script src="assets/js/works.js"></script><script>
+let filter='all';const grid=document.getElementById('grid');
+function render(){const q=document.getElementById('search').value.toLowerCase().trim();const data=WORKS.filter(w=>(filter==='all'||w.category===filter)&&(`${w.title} ${w.en} ${w.desc}`.toLowerCase().includes(q)));document.getElementById('count').textContent=String(data.length).padStart(2,'0')+' PROJECTS';grid.innerHTML=data.map(w=>{const n=WORKS.indexOf(w)+1;return `<a class="work-card" href="works/${w.id}/index.html"><div class="cover ${n===2?'c2':n===3?'c3':n===4?'c4':''}"><span class="cover-number">${String(n).padStart(2,'0')}</span><span class="cover-label">${w.category.toUpperCase()} / ${w.duration}</span></div><div class="card-body"><div class="card-meta"><span>${w.category.toUpperCase()}</span><span>${w.duration}</span></div><div class="card-title">${w.title}</div><div class="card-en">${w.en}</div><div class="card-desc">${w.desc}</div><div class="card-link"><span>进入作品 / VIEW PROJECT</span><span>↗</span></div></div></a>`}).join('')}
+document.getElementById('search').addEventListener('input',render);document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===b));render()}));render();
+</script></body></html>

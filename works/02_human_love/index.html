@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>暗恋人类日记 · Claude Opus 5.5</title>
+<link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+
+<body data-work="02_human_love">
+
+<div class="wrap">
+
+<header>
+<a class="brand" href="../../index.html">
+<span class="brand-mark">C</span>
+<span>
+<span class="brand-title">CLAUDE / OPUS 5.5</span>
+<span class="brand-sub" style="display:block">GENERATIVE MOTION ARCHIVE</span>
+</span>
+</a>
+<div class="header-right">
+<b>●</b> PROJECT DETAIL　 /　 <span id="headerIndex">02</span>
+</div>
+</header>
+
+<a class="back" href="../../index.html">← 返回作品目录 / ALL WORKS</a>
+
+<div class="detail-layout">
+
+<main>
+
+<section class="detail-head">
+<div class="eyebrow" id="category">MUSIC FILM / 02</div>
+<h1 class="detail-title" id="title">作品名称</h1>
+<div class="detail-sub" id="subtitle">作品描述</div>
+</section>
+
+<section class="video-card">
+<div class="video-stage" id="videoStage">
+<div class="video-empty">
+<strong>正在检查视频文件…</strong>
+<p>本页面只载入当前作品的视频，不会预加载其他作品。</p>
+</div>
+</div>
+<div class="video-caption">
+<span id="videoStatus">MP4 PLAYER · 按需加载</span>
+<span>HTML5 VIDEO</span>
+</div>
+</section>
+
+<section class="detail-description">
+<h3>关于这段作品</h3>
+<p id="description"></p>
+</section>
+
+</main>
+
+<aside class="detail-aside">
+
+<section class="resource-card">
+<h3>作品资源</h3>
+<p>下载当前作品的成片、工程文件与相关素材。</p>
+
+<a class="action primary" id="videoDownload" href="video.mp4" download>
+<span>下载 MP4 成片</span>
+<span class="arrow">↓</span>
+</a>
+
+<a class="action" id="projectDownload" href="project.zip" download>
+<span>下载工程文件 ZIP</span>
+<span class="arrow">↓</span>
+</a>
+
+<p style="margin-top:10px">
+将本作品的工程文件放入本目录下的 <b>project/</b> 文件夹，并打包为 project.zip，即可启用工程下载。
+</p>
+</section>
+
+<section class="resource-card">
+<h3>创作提示词</h3>
+<p>可直接复制，或下载为 TXT 文件。</p>
+
+<div class="prompt-box" id="prompt">提示词载入中…</div>
+
+<button class="action primary" id="copyPrompt">
+<span>复制完整提示词</span>
+<span class="arrow">↗</span>
+</button>
+
+<a class="action" id="promptDownload" href="prompt.txt" download>
+<span>下载提示词 TXT</span>
+<span class="arrow">↓</span>
+</a>
+</section>
+
+<section class="resource-card">
+<h3>作品资料</h3>
+<p id="meta"></p>
+<button class="action" id="copyPage">
+<span>复制本页链接</span>
+<span class="arrow">↗</span>
+</button>
+</section>
+
+</aside>
+</div>
+
+<footer>
+<span>CLAUDE OPUS 5.5 · VIDEO SHOWCASE</span>
+<span>AN INDEPENDENT CREATIVE ARCHIVE</span>
+</footer>
+
+</div>
+
+<script src="../../assets/js/works.js"></script>
+
+<script>
+const id = document.body.dataset.work;
+const w = window.WORKS.find(x => x.id === id);
+const $ = x => document.getElementById(x);
+
+if (w) {
+
+    document.title = w.title + ' · ' + w.en + ' | Claude Opus 5.5';
+
+    $('headerIndex').textContent = id.slice(0, 2);
+    $('category').textContent = w.category.toUpperCase() + ' / ' + id.slice(0, 2);
+
+    $('title').textContent = w.title;
+    $('subtitle').textContent = w.en + '　·　' + w.desc;
+    $('description').textContent = w.note;
+
+    $('prompt').textContent = w.prompt;
+
+    $('meta').textContent =
+        w.category + ' · ' + w.duration + ' · MP4 / 16:9 · Claude Opus 5.5';
+
+    $('videoDownload').href = 'video.mp4';
+    $('projectDownload').href = 'project.zip';
+    $('promptDownload').href = 'prompt.txt';
+
+    const stage = $('videoStage');
+    const v = document.createElement('video');
+
+    v.controls = true;
+    v.playsInline = true;
+    v.preload = 'none';
+
+    v.addEventListener('error', () => {
+        stage.innerHTML = `
+            <div class="video-empty">
+                <strong>还没有放入视频文件</strong>
+                <p>请将成片命名为 <b>video.mp4</b>，放在当前作品文件夹内。刷新页面后即可播放。</p>
+            </div>
+        `;
+        $('videoStatus').textContent = 'VIDEO NOT FOUND · 等待添加 video.mp4';
+    });
+
+    fetch('video.mp4', { method: 'HEAD' })
+        .then(r => {
+            if (!r.ok) throw new Error('Video not found');
+
+            v.src = 'video.mp4';
+            stage.replaceChildren(v);
+
+            $('videoStatus').textContent = 'READY · 点击播放';
+        })
+        .catch(() => {
+            stage.innerHTML = `
+                <div class="video-empty">
+                    <strong>把作品放进播放器</strong>
+                    <p>将 MP4 文件命名为 <b>video.mp4</b>，放到本页所在文件夹中即可。播放器采用按需载入，不会自动下载整部视频。</p>
+                </div>
+            `;
+            $('videoStatus').textContent = 'WAITING FOR video.mp4';
+        });
+
+    $('copyPrompt').onclick = async () => {
+        try {
+            await navigator.clipboard.writeText(w.prompt);
+            $('copyPrompt').querySelector('span').textContent = '已复制 ✓';
+        } catch (e) {
+            $('copyPrompt').querySelector('span').textContent = '复制失败，请手动复制';
+        }
+    };
+
+    $('copyPage').onclick = async () => {
+        try {
+            await navigator.clipboard.writeText(location.href);
+            $('copyPage').querySelector('span').textContent = '链接已复制 ✓';
+        } catch (e) {}
+    };
+
+} else {
+
+    document.querySelector('main').innerHTML =
+        '<p>未找到作品数据，请检查 works.js 配置。</p>';
+
+}
+</script>
+
+</body>
+</html>
